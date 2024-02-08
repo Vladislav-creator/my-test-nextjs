@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
-import {use} from "react";
+ import {use} from "react";
+import styles from "../../page.module.css";
+import { log } from "console";
 
-export function getData (id:string) {
+export function getData (id:string) {   
     const data = use( fetch(`https://jsonplaceholder.typicode.com/posts/${id}`,{
       next: {
         revalidate: 60
@@ -12,19 +14,21 @@ export function getData (id:string) {
     return data
   }
 
-
-import styles from "../../page.module.css";
 type Props = {
     params: {
         id: string
     }
 }
-export async function generateMetadata ({params: {id}}:Props): Promise<Metadata>{
-    return {
-        title: id,
-    }
-}
-export default  function Post({params: {id}}:Props) {
+
+//  export async function generateMetadata ({params: {id}}:Props): Promise<Metadata> {
+//      const post = await getData(id)
+//      return {
+//         title: post.title,
+//         description: post.body,
+//    }
+// }
+
+export default  function Post({params: {id}}:Props) {    
     const post = getData(id)
 return (
     <main className={styles.main}>
