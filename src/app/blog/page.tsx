@@ -1,13 +1,16 @@
-'use client'
+// 'use client'
 import styles from "../page.module.css";
 import Link from "next/link" 
 import {use} from "react";
 
 export function getData () {
-  const data = use( fetch('https://jsonplaceholder.typicode.com/posts').then(
+  const data = use( fetch('https://jsonplaceholder.typicode.com/posts',{
+    next: {
+      revalidate: 60
+    }
+  }).then(
     response => response.json()
-  )
-  ) 
+  ));
   return data
 }
   export default  function Blog () {
@@ -18,7 +21,7 @@ export function getData () {
        <ul>
         {posts.map((post:any)=>(
             <li key = {post.id}>
-                <Link href={`/blog/${post.id}`}>{post.title}</Link>
+                <Link href={`/blog/${post.id}`}>{post.id}-{post.title}</Link>
                 {post.title}
             </li>
         ))}
